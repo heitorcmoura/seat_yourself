@@ -1,0 +1,47 @@
+
+	<ul>
+		<li><%= @restaurant.name %></li>
+	<br>
+		<ul>
+			<li><%= @restaurant.address %></li><br>
+			<li><%= @restaurant.neighbourhood %></li><br>
+			<li><%= @restaurant.price_rating %></li><br>
+			<li><%= @restaurant.summary %></li><br>
+			<li><%= @restaurant.cuisine %></li><br>
+		</ul>
+	</ul>
+
+<% if current_user %>
+
+  <h4>New Reservation</h4>
+
+  <%= form_for([@restaurant, @reservation]) do |f| %>
+    <% if @reservation.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@reservation.errors.count, "error") %> prohibited this reservation from being saved:</h2>
+
+        <ul>
+        <% @reservation.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :party_size %><br />
+      <%= f.number_field :party_size %>
+    </div><br>
+    <div class="field">
+      <%= f.date_select :date, :start_year => Time.now.year, :end_year => Time.now.year %><br />
+  	  <%= f.time_select :time, :ignore_date => true, :ampm => true, :minute_step => 60, :default => {:hour => '11'} %>
+    </div><br>
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  <% end %>
+
+<% else %>
+  <p>Please <%= link_to "log in", new_session_path %> to add a reservation.</p> 
+<% end %>

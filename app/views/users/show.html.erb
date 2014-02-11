@@ -1,0 +1,19 @@
+<% if current_user %>
+
+  <h3>Reservations</h3>
+
+  <p>Reservations for <%= @user.name %></p>
+
+  <% @user.reservation.each do |reservation| %>
+    <p>
+      <%= reservation.name %>
+      <%= reservation.time %>
+      <%= reservation.date %>
+      <%= reservation.party_size %>
+      <%= reservation.date %> | <%= reservation.time.strftime("%H:%M") %> <br>
+      <br>
+      <%= link_to "Cancel Reservation", reservation, :confirm => "Are you sure you want to cancel this reservation?", :method => :delete %>
+    </p>
+  <% end %>
+
+<% end %>

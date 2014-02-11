@@ -1,0 +1,42 @@
+What do we need for reservations?
+
+1) We need to define an opening hour and a closing hour.
+	- ie. def opening_hour // 11 // end; def closing_hour // 20 // end
+2) We need to define a method for time slots.
+	- we need a reservation interval (1 hour. in rails, that's 1.hour. lol.)
+	- we need to come up with a start time. give it a 10 minute buffer so that immediate
+	  options are eliminated. (ie. time.zone.now + 10.minutes)
+	- time.zone.at allows us to generate a time. we need to take the start time and divide
+	  it by an hour. use the ceil method to round a float to the next highest integer.
+	  multiply this by the reservation interval.
+
+
+	  start_time = Time.zone.at( (start_time.to_f / reservation_interval).ceil * reservation_interval)
+
+	- we need to figure out the end time. let's set it to three days from now...
+	  end_time = (start_time + 3.days).change(hour: closing_hour)
+
+	 all_times << a_time
+
+	 a_time += reservation_interval
+
+	 if (a_time + reservation_interval) > a_time.change(hour:closing_hour)
+	 a_time = (a_time + 1.day).cange(hour:opening_hour)
+
+	 end while a_time < end_time
+
+
+1) install rspec (rails g rspec:install)
+
+
+
+describe Restaurant do
+	(to refactor... let (:restaurant) {Restaurant.new }
+	it 'should return true when no reservations' do
+		restaurant = Restaurant.new
+		expect (restaurant.availability).to_be true
+	end
+
+	it 'should return false when the restaurant is full' do
+		restaurant = Restaurant.new
+
